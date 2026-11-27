@@ -15,14 +15,16 @@ use Liberu\Accounting\PayrollPaymentsFilament\Resources\PayrollPaymentBatchResou
 
 it('registers and configures accounting-payroll-payments-filament filament resources', function (): void {
     $provider = $this->app->register(PayrollPaymentsFilamentServiceProvider::class, force: true);
-    if (method_exists($provider, 'boot')) { $provider->boot(); }
+    if (method_exists($provider, 'boot')) {
+        $provider->boot();
+    }
     $plugin = PayrollPaymentsFilamentPlugin::make();
     $panel = Panel::make()->id('test-pp');
     $plugin->register($panel);
     $plugin->boot($panel);
     expect($plugin->getId())->toBeString()->not->toBeEmpty();
 
-    $host = new ListPayrollPaymentBatches;
+    $host = new ListPayrollPaymentBatches();
     expect(PayrollPaymentBatchResource::getPages())->toBeArray();
     expect(PayrollPaymentBatchResource::getEloquentQuery())->toBeInstanceOf(Builder::class);
     expect(PayrollPaymentBatchResource::form(Schema::make($host)))->toBeInstanceOf(Schema::class);
